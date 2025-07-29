@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking History</title>
+    <style>
+        body {
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 40px;
+            background-image: url('th.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        /* Button Styling and Positioning */
+        .button-container {
+            position: absolute;
+            width: 94%;
+            display: flex;
+            justify-content: space-between;
+            margin: 20px;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        h2 {
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            margin-top: 30px;
+        }
+
+        .table-container {
+            width: 95%;
+            max-width: 1200px;
+            height: 60vh;
+            overflow-y: auto;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+            color: #333;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #e0e0e0;
+        }
+
+        .empty-message {
+            color: #fff;
+            margin-top: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Transparent scrollbar styling */
+        .table-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .table-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .table-container {
+            scrollbar-color: rgba(0, 0, 0, 0.2) rgba(255, 255, 255, 0.3);
+            scrollbar-width: thin;
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <button class="button" onclick="window.location.href='index.html'">
+            <i class="fas fa-home"></i> Home
+        </button>
+        <button class="button" onclick="deleteHistory()">
+            <i class="fas fa-trash"></i> Delete History
+        </button>
+    </div>
+    <h2>Booking History</h2>
+    <div class="table-container">
+        <table id="bookingHistoryTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Mobile</th>
+                    <th>Address</th>
+                    <th>DOB</th>
+                    <th>Departure City</th>
+                    <th>Destination City</th>
+                    <th>Departure Date</th>
+                    <th>Return Date</th>
+                    <th>Passengers</th>
+                    <th>Amount</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody id="historyTableBody">
+                <!-- Booking history rows will be injected here -->
+            </tbody>
+        </table>
+    </div>
+    <p id="emptyMessage" class="empty-message">No booking history available.</p>
+
+    <!-- FontAwesome for icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script>
+        function loadBookingHistory() {
+            const bookingHistory = JSON.parse(localStorage.getItem('bookingHistory')) || [];
+            const historyTableBody = document.getElementById('historyTableBody');
+            const emptyMessage = document.getElementById('emptyMessage');
+
+            if (bookingHistory.length === 0) {
+                emptyMessage.style.display = 'block';
+                return;
+            } else {
+                emptyMessage.style.display = 'none';
+            }
+
+            // Populate the table with booking history data
+            bookingHistory.forEach((history) => {
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+                    <td>${history.name}</td>
+                    <td>${history.mobile}</td>
+                    <td>${history.address}</td>
+                    <td>${history.dob}</td>
+                    <td>${history.departureCity}</td>
+                    <td>${history.destinationCity}</td>
+                    <td>${history.departureDate}</td>
+                    <td>${history.returnDate}</td>
+                    <td>${history.passengers}</td>
+                    <td>Rs ${history.amount}</td>
+                    <td>${new Date(history.timestamp).toLocaleString()}</td>
+                `;
+                
+                historyTableBody.appendChild(row);
+            });
+        }
+
+        // Clear history function
+        function deleteHistory() {
+            localStorage.removeItem('bookingHistory');
+            document.getElementById('historyTableBody').innerHTML = '';
+            document.getElementById('emptyMessage').style.display = 'block';
+        }
+
+        // Load booking history when the page loads
+        window.onload = loadBookingHistory;
+
+        function saveBookingToDatabase(bookingData) {
+            fetch('http://localhost:3000/saveBooking', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(bookingData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Booking saved to database successfully!');
+                } else {
+                    console.error('Failed to save booking.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Automatically upload all bookings to the database
+        function uploadAllBookings() {
+            const bookingHistory = JSON.parse(localStorage.getItem('bookingHistory')) || [];
+            bookingHistory.forEach(saveBookingToDatabase);
+        }
+
+        window.onload = function () {
+            loadBookingHistory();
+            uploadAllBookings();
+        };
+    </script>
+</body>
+</html>

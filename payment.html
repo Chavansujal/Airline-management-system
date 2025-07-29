@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Details</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #333;
+            overflow: auto;
+            background-color: #f4f7f9;
+        }
+        .banner {
+            width: 100%;
+            height: 100vh;
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(th.jpg);
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            width: 90%;
+            max-width: 800px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            padding: 20px;
+            animation: slideIn 1s forwards;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .form-container {
+            width: 100%;
+            max-height: 70vh;
+            overflow-y: auto;
+            padding: 30px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+        .form-container:hover {
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            transition: border 0.3s ease;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border: 1px solid #007BFF;
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 12px;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        .receipt {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            background-color: rgba(50, 50, 50, 0.9);
+            color: #f1f1f1;
+            max-height: 60vh;
+            overflow-y: auto;
+            animation: fadeIn 0.5s ease;
+        }
+        .receipt h3 {
+            color: #e6e6e6;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            
+            margin-bottom: 20px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        /* Print Styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #receipt, #receipt * {
+                visibility: visible;
+            }
+            #receipt {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <div class="container">
+            <div class="form-container">
+                <h2>Enter Payment Details</h2>
+                <!-- Bank Selection Field -->
+                <div class="form-group">
+                    <label for="bank">Select Bank:</label>
+                    <select id="bank" required>
+                        <option value="">Select your bank</option>
+                        <option value="SBI">State Bank of India (SBI)</option>
+                        <option value="ICICI">ICICI Bank</option>
+                        <option value="HDFC">HDFC Bank</option>
+                        <option value="Axis">Axis Bank</option>
+                    </select>
+                </div>
+                <!-- Number of Passengers Field -->
+                <div class="form-group">
+                    <label for="passengers">Number of Passengers:</label>
+                    <input type="number" id="passengers" placeholder="Enter number of passengers" required onchange="calculateTotal()">
+                </div>
+                <div class="form-group">
+                    <label for="account-number">Account Number:</label>
+                    <input type="text" id="account-number" placeholder="Enter account number" required>
+                </div>
+                <div class="form-group">
+                    <label for="ifsc-code">IFSC Code:</label>
+                    <input type="text" id="ifsc-code" placeholder="Enter IFSC code" required>
+                </div>
+                <!-- Payment Amount Field (readonly) -->
+                <div class="form-group">
+                    <label for="payment-amount">Payment Amount (Rs):</label>
+                    <input type="number" id="payment-amount" placeholder="Amount will be calculated" readonly>
+                </div>
+                <button onclick="addPayment()">Confirm Booking</button>
+                <button onclick="printReceipt()" id="printButton" style="display: none;">Print Receipt</button>
+                <div class="receipt" id="receipt">
+                    <h3>Booking Receipt</h3>
+                    <p><strong>Name:</strong> <span id="receiptName"></span></p>
+                    <p><strong>Bank:</strong> <span id="receiptBank"></span></p>
+                    <p><strong>Mobile Number:</strong> <span id="receiptMobile"></span></p>
+                    <p><strong>Address:</strong> <span id="receiptAddress"></span></p>
+                    <p><strong>Date of Birth:</strong> <span id="receiptDOB"></span></p>
+                    <p><strong>Departure City:</strong> <span id="receiptDeparture"></span></p>
+                    <p><strong>Destination City:</strong> <span id="receiptDestination"></span></p>
+                    <p><strong>Departure Date:</strong> <span id="receiptDepartureDate"></span></p>
+                    <p><strong>Return Date:</strong> <span id="receiptReturnDate"></span></p>
+                    <p><strong>Total Passengers:</strong> <span id="receiptPassengers"></span></p>
+                    <p><strong>Total Amount Paid:</strong> <span id="totalAmount"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to calculate total payment amount based on number of passengers
+        function calculateTotal() {
+            const passengers = document.getElementById('passengers').value;
+            const amountPerPerson = 1000;
+            const totalAmount = passengers * amountPerPerson;
+
+            document.getElementById('payment-amount').value = totalAmount;
+        }
+
+        function addPayment() {
+            const accountNumber = document.getElementById('account-number').value.trim();
+            const ifscCode = document.getElementById('ifsc-code').value.trim();
+            const bank = document.getElementById('bank').value;
+            const passengers = document.getElementById('passengers').value;
+            const paymentAmount = document.getElementById('payment-amount').value.trim();
+            const bookingDetails = JSON.parse(localStorage.getItem('bookingDetails'));
+            const userEmail = localStorage.getItem('userEmail'); // Assuming you saved the user's email during signup
+
+            console.log('User  Email:', userEmail); // Log the user email
+
+            if (!accountNumber || !ifscCode || !bank || !paymentAmount) {
+                alert("Please fill in all details.");
+                return;
+            }
+
+            displayReceipt(bookingDetails, paymentAmount, bank, passengers);
+            saveReceipt(bookingDetails, paymentAmount, bank, passengers);
+            sendConfirmationEmail(userEmail, bookingDetails);
+        }
+
+        function sendConfirmationEmail(email, bookingDetails) {
+            fetch('http://localhost:3000/send-confirmation-email', { // Update with your server URL
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, bookingDetails })
+        })
+            .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(data => {
+            console.log(data); // Handle success
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+    }
+        function displayReceipt(bookingDetails, paymentAmount, bank, passengers) {
+            document.getElementById('receiptName').innerText = bookingDetails.name;
+            document.getElementById('receiptMobile').innerText = bookingDetails.mobile;
+            document.getElementById('receiptAddress').innerText = bookingDetails.address;
+            document.getElementById('receiptDOB').innerText = bookingDetails.dob;
+ document.getElementById('receiptDeparture').innerText = bookingDetails.departureCity; // Display departure city
+            document.getElementById('receiptDestination').innerText = bookingDetails.destinationCity; // Display destination city
+            document.getElementById('receiptDepartureDate').innerText = bookingDetails.departureDate;
+            document.getElementById('receiptReturnDate').innerText = bookingDetails.returnDate;
+            document.getElementById('receiptPassengers').innerText = passengers;
+            document.getElementById('totalAmount').innerText = `Rs ${paymentAmount}`;
+            document.getElementById('receiptBank').innerText = bank;
+
+            document.getElementById('receipt').style.display = 'block';
+            document.getElementById('printButton').style.display = 'block';
+        }
+
+        function saveReceipt(bookingDetails, paymentAmount, bank, passengers) {
+            if (
+                !bookingDetails.name ||
+                !bookingDetails.mobile ||
+                !bookingDetails.departureCity ||
+                !bookingDetails.destinationCity
+            ) {
+                alert("Incomplete booking details, please provide all required information.");
+                return; // Stop saving if essential details are missing
+            }
+
+            const receipt = {
+                name: bookingDetails.name,
+                mobile: bookingDetails.mobile,
+                address: bookingDetails.address,
+                dob: bookingDetails.dob,
+                departureCity: bookingDetails.departureCity,
+                destinationCity: bookingDetails.destinationCity,
+                departureDate: bookingDetails.departureDate,
+                returnDate: bookingDetails.returnDate,
+                passengers: passengers,
+                bank: bank,
+                amount: paymentAmount,
+                timestamp: new Date().toISOString()
+            };
+
+            const bookingHistory = JSON.parse(localStorage.getItem('bookingHistory')) || [];
+            bookingHistory.push(receipt);
+            localStorage.setItem('bookingHistory', JSON.stringify(bookingHistory));
+        }
+
+        function printReceipt() {
+    const bookingHistory = JSON.parse(localStorage.getItem('bookingHistory')) || [];
+    const lastReceipt = bookingHistory[bookingHistory.length - 1];
+
+    if (lastReceipt) {
+        // Create a ticket object
+        const ticket = {
+            airline: "AirNexus",
+            name: lastReceipt.name,
+            passengers: lastReceipt.passengers,
+            amount: lastReceipt.amount,
+            departureCity: lastReceipt.departureCity,
+            destinationCity: lastReceipt.destinationCity,
+            address: lastReceipt.address,
+            mobile: lastReceipt.mobile,
+            timestamp: new Date().toISOString()
+        };
+
+        // Save the ticket to local storage
+        const tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+        tickets.push(ticket);
+        localStorage.setItem('tickets', JSON.stringify(tickets));
+
+        // Print the receipt
+        // window.print();
+
+        // Redirect to my-booking.html after a short delay to allow printing dialog to open
+        setTimeout(() => {
+            window.location.href = 'my-bookings.html';
+        }, 1000); // Adjust the delay as needed
+    }
+}
+    
+    </script>
+</body>
+</html>

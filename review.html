@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airline Reviews</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-image: url('th.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #fff;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .review-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-height: 500px;
+            overflow-y: auto;
+            animation: slideIn 0.8s ease-in-out;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .review {
+            border-bottom: 1px solid #e0e0e0;
+            padding: 15px 0;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+        .review:hover {
+            transform: scale(1.02);
+            background: rgba(240, 240, 240, 0.8);
+        }
+        .review:last-child {
+            border-bottom: none;
+        }
+        .review h3 {
+            margin: 0;
+            color: #007BFF;
+            font-weight: 600;
+            font-size: 1.2em;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+        .review p {
+            margin: 5px 0;
+            color: #555;
+            line-height: 1.6;
+        }
+        .review p.rating {
+            color: #FFD700;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+        .review-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .review-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .review-container::-webkit-scrollbar-thumb {
+            background: rgba(51, 51, 51, 0.3);
+            border-radius: 4px;
+        }
+        .review-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(51, 51, 51, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Customer Reviews</h1>
+    <div class="review-container">
+        <div class="review">
+            <h3>John Doe</h3>
+            <p class="rating">★★★★★</p>
+            <p>I had a fantastic experience flying with Airline X. The staff were friendly, and the flight was smooth!</p>
+        </div>
+        <div class="review">
+            <h3>Jane Smith</h3>
+            <p class="rating">★★★★☆</p>
+            <p>Great service and comfortable seats. The only downside was the delay in departure.</p>
+        </div>
+        <div class="review">
+            <h3>Emily Johnson</h3>
+            <p class="rating">★★★☆☆</p>
+            <p>Decent flight, but the food could have been better. Overall, a satisfactory experience.</p>
+        </div>
+        <div class="review">
+            <h3>Michael Brown</h3>
+            <p class="rating">★★★★★</p>
+            <p>Absolutely loved my trip! The in-flight entertainment was top-notch, and the crew was very attentive.</p>
+        </div>
+        <div class="review">
+            <h3>Sarah Davis</h3>
+            <p class="rating">★★☆☆☆</p>
+            <p>Unfortunately, my luggage was delayed, which was quite frustrating. I hope they improve their handling.</p>
+        </div>
+        <div class="review">
+            <h3>Rahul Sharma</h3>
+            <p class="rating">★★★★★</p>
+            <p>Had a wonderful experience! The flight was on time, and the staff was very courteous.</p>
+        </div>
+        <div class="review">
+            <h3>Om Verma</h3>
+            <p class="rating">★★★★☆</p>
+            <p>The food was delicious, and the seats were comfortable. I would definitely fly again!</p>
+        </div>
+        <div class="review">
+            <h3>Vikram Singh</h3>
+            <p class="rating">★★★☆☆</p>
+            <p>It was an average experience. The flight was okay, but the check-in process was a bit slow.</p>
+        </div>
+        <div class="review">
+            <h3>Pooja Gupta</h3>
+            <p class="rating">★★★★★</p>
+            <p>Excellent service! The crew went above and beyond to make our journey pleasant.</p>
+        </div>
+        <div class="review">
+            <h3>Arjun Reddy</h3>
+            <p class="rating">★★★★☆</p>
+            <p>Overall a good experience, but I wish there were more entertainment options available.</p>
+        </div>
+        <div class="review">
+            <h3>Neha Kapoor</h3>
+            <p class="rating">★★★★★</p>
+            <p>Fantastic service! The flight was comfortable, and the staff was very helpful throughout the journey.</p>
+        </div>
+        <div class="review">
+            <h3>Ravi Mehta</h3>
+            <p class="rating">★★★★☆</p>
+            <p>Good experience overall, but the boarding process could be improved for efficiency.</p>
+        </div>
+        <div class="review">
+            <h3>Sneha Iyer</h3>
+            <p class="rating">★★★☆☆</p>
+            <p>The flight was decent, but I expected better food options. The crew was friendly, though.</p>
+        </div>
+        <div class="review">
+            <h3>Ajay Choudhary</h3>
+            <p class="rating">★★★★★</p>
+            <p>One of the best flights I've had! The entertainment options were great, and the staff was very attentive.</p>
+        </div>
+        <div class="review">
+            <h3>Tanvi Joshi</h3>
+            <p class="rating">★★★★☆</p>
+            <p>Really enjoyed my flight! The seats were comfortable, and the service was excellent.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+Hey there,
+If you have to run this project first you have to know all the basic knowledge about project.
+
+This is the project of airline management system which is made by using multiple languages 
+like html css and etc.
+
+For front end developement we use html , css and javascript and for backend developement we use node.js framework , javascript algorithms and for saving the flight details we use mongo db database.
+
+now first u have check all the derectories , in nexus-airline-backend derectory all the backend connection logic and packages files are included.
+
+Now first please make sure in your PC you have downloaded MONGO DB application
+
+
+***************** STEPS TO RUN PROJECT ******************
+
+1 ) Now in nexus-airline-backend you will see SERVER.js file , you have to go in this derectory terminal using "cd.." command. 
+2 ) then enter = "node server.js" command in your terminal.
+3 ) after running this command your server will start , now if you have live server then go in "load.html" run your project by clicking "go live" if you don't have live server then you can download this live server from "extensions" 
+4 ) either you can run your project normally by clicking RUN button.
+
+
+----> in your mongo db database your 

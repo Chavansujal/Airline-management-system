@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airline Offers</title>
+    <link rel="icon" href="apnalogo.png" type="image/png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            background-image: linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)),url(th.jpg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .offer-section {
+            background-color: transparent;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 1000px;
+            margin: 20px auto;
+            height: auto; /* Remove fixed height */
+        }
+        .offer-section h1 {
+            color: white;
+            text-align: center;
+        }
+        .offer-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            flex: 1 1 calc(33.333% - 10px);
+            margin: 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f9f9f9;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .offer-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .offer-details {
+            flex: 1;
+            text-align: center;
+        }
+        .offer-destination {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+        .offer-price {
+            font-size: 1.2em;
+            color: #e74c3c;
+            margin-top: 5px;
+        }
+        .offer-validity {
+            font-size: 0.9em;
+            color: #555;
+        }
+        .book-button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1em;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        .book-button:hover {
+            background-color: #b92929;
+        }
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+    </style>
+</head>
+<body>
+    <div class="offer-section">
+        <h1>Exclusive Airline Offers</h1>
+        <div class="flex-container">
+            <!-- Offer Cards -->
+            <div class="offer-card">
+                <div class="offer-details">
+                    <div class="offer-destination">Delhi to Mumbai</div>
+                    <div class="offer-price">Starting at 1000rs</div>
+                    <div class="offer-validity">Valid until: 31st December 2024</div>
+                </div>
+                <a href="Ticket.html" class="book-button">Book Now</a>
+            </div>
+            <div class="offer-card">
+                <div class="offer-details">
+                    <div class="offer-destination">Mumbai to Goa</div>
+                    <div class="offer-price">Starting at 1000rs</div>
+                    <div class="offer-validity">Valid until: 15th January 2025</div>
+                </div>
+                <a href="Ticket.html" class="book-button">Book Now</a>
+            </div>
+            <div class="offer-card">
+                <div class="offer-details">
+                    <div class="offer-destination">Mumbai to Sambajinagar</div>
+                    <div class="offer-price">Starting at 1000rs</div>
+                    <div class="offer-validity">Valid until: 20th November 2024</div>
+                </div>
+                <a href="Ticket.html" class="book-button">Book Now</a>
+            </div>
+            <div class="offer-card">
+                <div class="offer-details">
+                    <div class="offer-destination">Bangalore to Hyderabad</div>
+                    <div class="offer-price">Starting at 2000rs</div>
+                    <div class="offer-validity">Valid until: 28th February 2025</div>
+                </div>
+                <a href="Ticket.html" class="book-button">Book Now</a>
+            </div>
+            <div class="offer-card">
+                <div class="offer-details">
+                    <div class="offer-destination">Chennai to Kolkata</div>
+                    <div class="offer-price">Starting at 1500rs</div>
+                    <div class="offer-validity">Valid until: 10th March 2025</div>
+                </div>
+                <a href="Ticket.html" class="book-button">Book Now</a>
+            </div>
+            <div class="offer-card">
+                <div class="offer-details">
+                    <div class="offer-destination">Jaipur to Ahmedabad</div>
+                    <div class="offer-price">Starting at 1000rs</div>
+                    <div class="offer-validity">Valid until: 15th April 2025</div>
+                </div>
+                <a href="Ticket.html" class="book-button">Book Now</a>
+            </div>
+            <div class="offer-card">
+                <div class="offer-details">
+                    <div class="offer-destination">Pune to Kochi</div>
+                    <div class="offer-price">Starting at 1000rs</div>
+                    <div class="offer-validity">Valid until: 30th April 2025</div>
+                </div>
+                <a href="Ticket.html" class="book-button">Book Now</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

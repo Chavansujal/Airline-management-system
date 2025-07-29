@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url("images/plane.jpg");
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background-color: #222222ce;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            color: #fff;
+            width: 600px;
+            height: 400px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="text-center">Create an Account</h2>
+        <form id="signInForm">
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+        </form>
+        <div class="text-center mt-3">
+            <a href="log-in.html">Already have an account? Log In</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('signInForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Save user credentials in localStorage
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            users.push({ email, password });
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('loggedInEmail', email); // Save active user email
+
+            const emailContent = `
+                Dear Valued Customer,
+<br>
+                We are thrilled to welcome you to Nexus Airlines!<br>
+                Your account has been successfully created and you can now enjoy our services.<br>
+                
+                Here are your account details:
+                Email: ${email}
+                Password: ${password} (Please change this after your first login for security reasons)
+
+                Thank you for choosing Nexus Airlines. We look forward to serving you!
+
+                Warm regards,
+                The Nexus Airlines Team
+            `;
+
+            fetch('http://localhost:3000/send-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    message: emailContent,
+                }),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Welcome to fly with Nexus Airlines!');
+                        window.location.href = 'index.html';
+                    } else {
+                        alert('Error sending email. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Unexpected error. Please try again.');
+                });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Booking Form</title>
+    <link rel="icon" href="apnalogo.png" type="image/png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url(th.jpg);
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: rgb(255, 255, 255);
+            margin: 0;
+            overflow: hidden;
+            perspective: 1000px;
+            /* For 3D effect */
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            /* Set a maximum height */
+            overflow-y: auto;
+            /* Enable vertical scrolling */
+            opacity: 0;
+            transform: translateY(20px) rotateY(-10deg);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .container h2 {
+            text-align: center;
+            color: #ff7f00;
+            margin-bottom: 20px;
+            animation: flashText 1.5s infinite ease-in-out alternate;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            animation: slideInFromLeft 0.5s ease-out;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        button {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #02b9fb;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: rgb(252, 252, 252);
+            transition: all 0.3s ease;
+        }
+
+        select {
+            color: rgb(255, 255, 255);
+            /* Set the text color of the dropdown to black */
+            background-color: rgb(0, 0, 0);
+            /* Keep the background color as it is */
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #ff5722;
+            box-shadow: 0 0 15px rgba(255, 87, 34, 0.7);
+            transform: translateY(-2px);
+        }
+
+        button {
+            background-color: rgba(0, 123, 255, 0.8);
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: rgba(179, 0, 0, 0.8);
+            transform: scale(1.1);
+        }
+
+        .flights-container {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            display: none;
+            color: #fff;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .flight-item {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            transition: all 0.3s ease;
+        }
+
+        .flight-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
+        }
+
+        .flight-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Custom Scrollbar */
+        .container::-webkit-scrollbar {
+            width: 8px;
+            /* Width of the scrollbar */
+        }
+
+        .container::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            /* Background of the scrollbar track */
+        }
+
+        .container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.5);
+            /* Color of the scrollbar thumb */
+            border-radius: 4px;
+            /* Rounded corners for the scrollbar thumb */
+        }
+
+        .container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.8);
+            /* Color on hover */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInFromLeft {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes flashText {
+            from {
+                color: #ff5722;
+            }
+
+            to {
+                color: #ff7f00;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Flight Booking</h2>
+        <form id="flightForm">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="mobile">Mobile Number:</label>
+                <input type="tel" id="mobile" name="mobile" pattern="[0-9]{10}" required
+                    placeholder="10-digit mobile number">
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" required>
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob" required>
+            </div>
+            <div class="form-group">
+                <label for="departure">Departure City:</label>
+                <select id="departure" name="departure" required onchange="generateFlights()">
+                    <option value="" disabled selected>Select Departure City</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="destination">Destination City:</label>
+                <select id="destination" name="destination" required onchange="generateFlights()">
+                    <option value="" disabled selected>Select Destination City</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="departure-date">Departure Date:</label>
+                <input type="date" id="departure-date" name="departure-date">
+            </div>
+            <div class="form-group">
+                <label for="return-date">Return Date:</label>
+                <input type="date" id="return-date" name="return-date">
+            </div>
+            <div class="form-group">
+                <label for="passengers">Number of Passengers:</label>
+                <input type="number" id="passengers" name="passengers" min="1" required>
+            </div>
+            <button type="button" onclick="searchFlights()">Search Flights</button><br><br>
+        </form>
+
+        <div class="flights-container" id="flightsContainer">
+            <h3>Available Flights</h3>
+            <div id="flightsList"></div>
+        </div>
+
+        <button type="button" onclick="processBooking()">Book Selected Flight</button>
+    </div>
+
+    <script>
+        window.addEventListener('load', function () {
+            const container = document.querySelector('.container');
+            container.style.opacity = '1';
+            container.style.transform = 'translateY(0) rotateY(0)'; // Reset transform animate
+        });
+
+        const cities = [
+            'Delhi', 'Mumbai', 'Bangalore', 'Kolkata', 'Chennai', 'Hyderabad', 'Ahmedabad', 'Jaipur',
+            'Pune', 'Kochi', 'Bhopal', 'Lucknow', 'Goa', 'Visakhapatnam', 'Indore', 'Nagpur',
+            'Coimbatore', 'Surat', 'Vadodara', 'Ludhiana', 'Thane', 'Agra', 'Madurai', 'Ludhiana',
+            'Mangalore', 'Mysore', 'Kozhikode', 'Warangal', 'Solapur', 'Salem', 'Vijayawada',
+            'Faridabad', 'Ghaziabad', 'Gwalior', 'Ranchi', 'Bhubaneswar', 'Guwahati', 'Jodhpur',
+            'Nashik', 'Raipur', 'Patna', 'Dehradun', 'Aurangabad', 'Amravati', 'Amritsar', 'Noida',
+            'Kanpur', 'Varanasi', 'Allahabad', 'Howrah', 'Meerut', 'Jabalpur', 'Gurgaon', 'Cuttack',
+            'Firozabad', 'Dhanbad', 'Jhansi', 'Bikaner', 'Bokaro Steel City', 'Rourkela', 'Brahmapur',
+            'Tiruchirappalli', 'Kota', 'Vellore', 'Bhilai', 'Thiruvananthapuram', 'Ujjain', 'Bhatinda',
+            'Jamshedpur', 'Burhanpur', 'Asansol', 'Nellore', 'Bhavnagar', 'Srinagar', 'Rewa', 'Nanded',
+            'Kullu', 'Shirdi', 'Gaya', 'Ratlam', 'Alwar', 'Lonavala', 'Chhindwara', 'Bundi', 'Hampi',
+            'Bandhavgarh', 'Sasan Gir', 'Badrinath', 'Dimapur', 'Puri', 'Dwarka', 'Chitradurga',
+            'Khandwa', 'Koraput', 'Mandya', 'Palitana', 'Haldwani', 'Nalanda', 'Kanyakumari',
+            'Muzaffarpur', 'Kalimpong', 'Rohtak', 'Faizabad', 'Satara', 'Ratlam', 'Malda', 'Silchar',
+            'Itanagar', 'Dharamshala', 'Kargil', 'Tezpur', 'Pithoragarh', 'Bhatinda', 'Jaisalmer',
+            'Alleppey', 'Anantapur', 'Ajmer', 'Kullu', 'Shirdi', 'Gaya', 'Rourkela', 'Haridwar',
+            'Meerut', 'Lonavala', 'Chhindwara', 'Bundi', 'Hampi', 'Bandhavgarh', 'Sasan Gir',
+            'Badrinath', 'Dimapur', 'Puri', 'Dwarka', 'Warangal', 'Chitradurga', 'Nanded', 'Alwar',
+            'Khandwa', 'Koraput', 'Mandya', 'Pithoragarh', 'Bhatinda', 'Jaisalmer', 'Srinagar',
+            'Rewa', 'Nanded',
+        ];
+
+        let flights = [];
+
+        function generateFlights() {
+            const departureCity = document.getElementById('departure').value;
+            const destinationCity = document.getElementById('destination').value;
+
+            // Clear previous flights
+            flights = [];
+
+            // Generate flights for all routes from the selected departure city
+            if (departureCity) {
+                cities.forEach(destination => {
+                    if (destination !== departureCity) {
+                        flights.push({
+                            id: Math.random().toString(36).substr(2, 9),
+                            departure: departureCity,
+                            destination: destination,
+                            flightNumber: `FL${Math.floor(Math.random() * 1000)}`,
+                            time: `${Math.floor(Math.random() * 24)}:${String(Math.floor(Math.random() * 60)).padStart(2, '0')} ${Math.random() > 0.5 ? 'AM' : 'PM'}`,
+                            days: 'Daily'
+                        });
+                    }
+                });
+            }
+
+            // If a destination city is also selected, filter flights
+            if (destinationCity) {
+                flights = flights.filter(flight => flight.destination === destinationCity);
+            }
+        }
+
+        function searchFlights() {
+            const departureCity = document.getElementById('departure').value.trim();
+            const destinationCity = document.getElementById('destination').value.trim();
+
+            const availableFlights = flights.filter(flight =>
+                flight.departure.toLowerCase() === departureCity.toLowerCase() &&
+                flight.destination.toLowerCase() === destinationCity.toLowerCase()
+            );
+
+            const flightsContainer = document.getElementById('flightsContainer');
+            const flightsList = document.getElementById('flightsList');
+            flightsList.innerHTML = '';
+
+            if (availableFlights.length > 0) {
+                availableFlights.forEach(flight => {
+                    const flightItem = document.createElement('div');
+                    flightItem.classList.add('flight-item');
+                    flightItem.innerHTML = `
+                        <input type="radio" name="selectedFlight" value="${flight.id}">
+                        Flight Number: ${flight.flightNumber}, Time: ${flight.time}, Days: ${flight.days}
+                    `;
+                    flightsList.appendChild(flightItem);
+                });
+                flightsContainer.style.display = 'block';
+            } else {
+                flightsContainer.style.display = 'none';
+                alert('No flights available for the selected route.');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const departureSelect = document.getElementById('departure');
+            const destinationSelect = document.getElementById('destination');
+
+            cities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                option.textContent = city;
+                departureSelect.appendChild(option);
+                destinationSelect.appendChild(option.cloneNode(true));
+            });
+        });
+
+        function validateDates() {
+            const departureDate = new Date(document.getElementById('departure-date').value);
+            const returnDate = new Date(document.getElementById('return-date').value);
+
+            if (returnDate < departureDate) {
+                alert('Return date must be after departure date.');
+                return false;
+            }
+            return true;
+        }
+
+        function processBooking() {
+            if (!validateDates()) return;
+
+            const selectedFlight = document.querySelector('input[name="selectedFlight"]:checked');
+            if (!selectedFlight) {
+                alert('Please select a flight to book.');
+                return;
+            }
+
+            const bookingDetails = {
+                name: document.getElementById('name').value,
+                mobile: document.getElementById('mobile').value,
+                address: document.getElementById('address').value,
+                dob: document.getElementById('dob').value,
+                departureCity: document.getElementById('departure').value,
+                destinationCity: document.getElementById('destination').value,
+                departureDate: document.getElementById('departure-date').value,
+                returnDate: document.getElementById('return-date').value,
+                passengers: document.getElementById('passengers').value,
+                flightId: selectedFlight.value
+            };
+
+            localStorage.setItem('bookingDetails', JSON.stringify(bookingDetails));
+            alert('Flight selected successfully! Redirecting you to payment gateway.');
+
+            window.location.href = 'payment.html';
+        }
+    </script>
+</body>
+
+</html>

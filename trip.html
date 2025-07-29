@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color:  #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+        .card:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .flight {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .summary {
+            border-left: 2px solid #ddd;
+            padding-left: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="page1" class="container">
+        <h2>Select Your Flight</h2>
+        <div class="card" id="flight-options">
+            <!-- Flight options will be dynamically generated here -->
+        </div>
+    </div>
+
+    <div id="page2" class="container hidden">
+        <h2>Review Your Booking</h2>
+        <div class="card">
+            <img id="destinationImage" src="images/singapore.jpg" alt="Destination" style="width: 100%; border-radius: 10px;">
+            <h3 id="destinationName">Singapore</h3>
+            <p id="destinationDescription">Discover the perfect blend of culture and modernity.</p>
+        </div> 
+    
+        <div class="card summary">
+            <h3>Booking Summary</h3>
+            <p><strong>Hotel:</strong> <span id="hotelName"></span></p>
+            <p><strong>Nights:</strong> <span id="nights"></span> (₹<span id="hotelPrice"></span>)</p>
+            <p><strong>Flight:</strong> <span id="flightDetails"></span></p>
+            <p><strong>Total:</strong> ₹<span id="totalAmount"></span></p>
+            <button class="btn" onclick="confirmBooking()">Confirm Booking</button>
+        </div>
+    </div>
+    
+ 
+    <div id="page3" class="container hidden">
+        <div class="card" style="text-align: center;">
+            <h2>Booking Confirmed!</h2>
+            <p>Your trip has been booked successfully.</p>
+            <button class="btn" onclick="startOver()">okay</button>
+        </div>
+    </div>
+
+    <script>
+        // Extract hotel details from the URL
+        const params = new URLSearchParams(window.location.search);
+        const hotelName = params.get("hotelName");
+        const hotelPrice = parseInt(params.get("price").replace(/₹/g, '').replace(/,/g, '')) || 0;
+        const destination = params.get("destination"); // Get the destination
+
+        // Display hotel information in the booking summary
+        document.getElementById('hotelName').textContent = hotelName;
+        document.getElementById('hotelPrice').textContent = hotelPrice;
+        document.getElementById('nights').textContent = 1; // Assuming 1 night for simplicity
+        document.getElementById('totalAmount').textContent = hotelPrice; // Initial total amount
+
+        // Define flight options based on the destination
+        const flights = {
+    singapore: [
+        { from: "Delhi", price: 35000, departureTime: "10:00 PM", arrivalTime: "6:30 AM" },
+        { from: "Mumbai", price: 38000, departureTime: "12:00 PM", arrivalTime: "8:30 AM" },
+        { from: "Pune", price: 33000, departureTime: "9:00 PM", arrivalTime: "10:30 AM" },
+        { from: "Sambhajinagar", price: 30000, departureTime: "11:00 PM", arrivalTime: "5:30 AM" }
+    ],
+    manali: [
+        { from: "Delhi", price: 35000, departureTime: "10:00 AM", arrivalTime: "6:30 PM" },
+        { from: "Mumbai", price: 38000, departureTime: "12:00 PM", arrivalTime: "5:30 PM" },
+        { from: "Pune", price: 33000, departureTime: "10:00 PM", arrivalTime: "6:30 AM" },
+        { from: "Sambhajinagar", price: 30000, departureTime: "01:00 PM", arrivalTime: "12:30 AM" }
+    ],
+    paris: [
+        { from: "Delhi", price: 35000, departureTime: "9:00 AM", arrivalTime: "5:30 PM" },
+        { from: "Mumbai", price: 38000, departureTime: "11:00 AM", arrivalTime: "7:30 PM" },
+        { from: "Pune", price: 33000, departureTime: "8:00 AM", arrivalTime: "4:30 PM" },
+        { from: "Sambhajinagar", price: 30000, departureTime: "10:00 AM", arrivalTime: "6:30 PM" }
+    ],
+    dubai: [
+        { from: "Delhi", price: 35000, departureTime: "11:00 PM", arrivalTime: "1:30 AM" },
+        { from: "Mumbai", price: 38000, departureTime: "12:30 AM", arrivalTime: "3:00 AM" },
+        { from: "Pune", price: 33000, departureTime: "10:30 PM", arrivalTime: "1:00 AM" },
+        { from: "Sambhajinagar", price: 30000, departureTime: "11:30 PM", arrivalTime: "2:00 AM" }
+    ],
+    maldives: [
+        { from: "Delhi", price: 35000, departureTime: "8:00 AM", arrivalTime: "4:30 PM" },
+        { from: "Mumbai", price: 38000, departureTime: "9:00 AM", arrivalTime: "5:30 PM" },
+        { from: "Pune", price: 33000, departureTime: "7:00 AM", arrivalTime: "3:30 PM" },
+        { from: "Sambhajinagar", price: 30000, departureTime: "10:00 AM", arrivalTime: "6:30 PM" }
+    ],
+    newyork: [
+        { from: "Delhi", price: 35000, departureTime: "9:00 PM", arrivalTime: "6:30 AM" },
+        { from: "Mumbai", price: 38000, departureTime: "11:00 PM", arrivalTime: "8:30 AM" },
+        { from: "Pune", price: 33000, departureTime: "10:00 PM", arrivalTime: "7:30 AM" },
+        { from: "Sambhajinagar", price: 30000, departureTime: "12:00 AM", arrivalTime: "9:30 AM" }
+    ],
+    tokyo: [
+        { from: "Delhi", price: 35000, departureTime: "10:00 PM", arrivalTime: "7:30 AM" },
+        { from: "Mumbai", price: 38000, departureTime: "12:00 PM", arrivalTime: "9:30 PM" },
+        { from: "Pune", price: 33000, departureTime: "9:00 PM", arrivalTime: "6:30 AM" },
+        { from: "Sambhajinagar", price: 30000, departureTime: "11:00 PM", arrivalTime: "8:30 AM" }
+    ],
+ goa: [
+        { from: "Delhi", price: 35000, departureTime: "8:00 AM", arrivalTime: "10:30 AM" },
+        { from: "Mumbai", price: 38000, departureTime: "9:30 AM", arrivalTime: "12:00 PM" },
+        { from: "Pune", price: 33000, departureTime: "7:00 AM", arrivalTime: "9:30 AM" },
+        { from: "Sambhajinagar", price: 30000, departureTime: "10:00 AM", arrivalTime: "12:30 PM" }
+    ],
+    london: [
+        { from: "Delhi", price: 35000, departureTime: "11:00 PM", arrivalTime: "6:30 AM" },
+        { from: "Mumbai", price: 38000, departureTime: "12:00 AM", arrivalTime: "7:30 AM" },
+        { from: "Pune", price: 33000, departureTime: "10:00 PM", arrivalTime: "5:30 AM" },
+        { from: "Sambhajinagar", price: 30000, departureTime: "1:00 AM", arrivalTime: "8:30 AM" }
+    ],
+    rome: [
+        { from: "Delhi", price: 35000, departureTime: "9:00 AM", arrivalTime: "5:30 PM" },
+        { from: "Mumbai", price: 38000, departureTime: "11:00 AM", arrivalTime: "7:30 PM" },
+        { from: "Pune", price: 33000, departureTime: "8:00 AM", arrivalTime: "4:30 PM" },
+        { from: "Sambhajinagar", price: 30000, departureTime: "10:00 AM", arrivalTime: "6:30 PM" }
+    ],
+    capetown: [
+        { from: "Delhi", price: 35000, departureTime: "10:00 PM", arrivalTime: "8:30 AM" },
+        { from: "Mumbai", price: 38000, departureTime: "12:00 AM", arrivalTime: "10:30 AM" },
+        { from: "Pune", price: 33000, departureTime: "11:00 PM", arrivalTime: "9:30 AM" },
+        { from: "Sambhajinagar", price: 30000, departureTime: "1:00 AM", arrivalTime: "11:30 AM" }
+    ],
+    sydney: [
+        { from: "Delhi", price: 35000, departureTime: "9:00 PM", arrivalTime: "7:30 AM" },
+        { from: "Mumbai", price: 38000, departureTime: "11:00 PM", arrivalTime: "9:30 AM" },
+        { from: "Pune", price: 33000, departureTime: "10:00 PM", arrivalTime: "8:30 AM" },
+        { from: "Sambhajinagar", price: 30000, departureTime: "12:00 AM", arrivalTime: "10:30 AM" }
+    ]
+            // Add more destinations and their respective flights if needed
+        };
+           // Define destination details
+    const destinationDetails = {
+        singapore: {
+            image: "images/singapore.jpg",
+            name: "Singapore",
+            description: "Discover the perfect blend of culture and modernity."
+        },
+        newyork: {
+            image: "images/newyork.jpg",
+            name: "New York",
+            description: "Experience the vibrant city life and iconic landmarks."
+        },
+        tokyo: {
+            image: "images/tokyo.jpeg",
+            name: "Tokyo",
+            description: "Explore the unique blend of tradition and cutting-edge technology."
+        },
+        manali: {
+            image: "images/Manali.jpg",
+            name: "Manali",
+            description: "Experience the breathtaking beauty of the Himalayas."
+        },
+        Paris: {
+            image: "images/Paris.jpeg",
+            name: "Paris",
+            description: "Explore the romantic city of lights."
+        },
+        maldives: {
+            image: "images/maldivs.jpg",
+            name: "maldives",
+            description: "Relax in paradise by the turquoise waters."
+        },
+        dubai: {
+            image: "images/dubai.jpg",
+            name: "dubai",
+            description: "Experience luxury and skyscrapers."
+        },
+        goa: {
+            image: "images/goa.jpg",
+            name: "goa",
+            description: "Unwind on sun-kissed beaches."
+        },
+        London: {
+            image: "images/London.jpeg",
+            name: "London",
+            description: "Discover the charm of England’s capital."
+        },
+        sydney: {
+            image: "images/sydey.jpeg",
+            name: "sydney",
+            description: "Visit the iconic Sydney Opera House."
+        },
+        rome: {
+            image: "images/rome.jpg",
+            name: "rome",
+            description: "Step into the historic ruins of Italy."
+        },
+        capetown: {
+            image: "images/capetown.jpeg",
+            name: "capetown",
+            description: "Marvel at the beauty of Table Mountain."
+        }
+    };
+        // Generate flight options dynamically based on the destination
+        function loadFlightOptions() {
+    const flightOptionsContainer = document.getElementById('flight-options');
+    const availableFlights = flights[destination.toLowerCase()];
+
+    // Clear previous flight options
+    flightOptionsContainer.innerHTML = '';
+
+    if (availableFlights) {
+        availableFlights.forEach(flight => {
+            const flightCard = document.createElement('div');
+            flightCard.className = 'card';
+            flightCard.innerHTML = `
+                <div class="flight">
+                    <div>
+                        <h3>Nexus Airlines</h3>
+                        <p><strong>From:</strong> ${flight.from} (${flight.departureTime})</p>
+                        <p><strong>To:</strong> ${destination.charAt(0).toUpperCase() + destination.slice(1)} (${flight.arrivalTime})</p>
+                    </div>
+                    <p><strong>Price:</strong> ₹${flight.price}</p>
+                    <button class="btn" onclick="selectFlight('${flight.from}', ${flight.price})">Select</button>
+                </div>
+            `;
+            flightOptionsContainer.appendChild(flightCard);
+        });
+    } else {
+        flightOptionsContainer.innerHTML = '<p>No flights available for this destination.</p>';
+    }
+}
+
+    function selectFlight(from, price) {
+        document.getElementById('page1').classList.add('hidden');
+        document.getElementById('page2').classList.remove('hidden');
+        document.getElementById('flightDetails').textContent = `${from} → ${destination.charAt(0).toUpperCase() + destination.slice(1)} (₹${price})`;
+        document.getElementById('totalAmount').textContent = hotelPrice + price; // Update total with selected flight price
+
+        // Update destination image and description
+        const destinationKey = destination.toLowerCase();
+        if (destinationDetails[destinationKey]) {
+            document.getElementById('destinationImage').src = destinationDetails[destinationKey].image;
+            document.getElementById('destinationName').textContent = destinationDetails[destinationKey].name;
+            document.getElementById('destinationDescription').textContent = destinationDetails[destinationKey].description;
+        }
+    }
+
+    function confirmBooking() {
+    const bookingData = {
+        hotelName: document.getElementById('hotelName').textContent,
+        hotelPrice: document.getElementById('hotelPrice').textContent,
+        nights: document.getElementById('nights').textContent,
+        flightDetails: document.getElementById('flightDetails').textContent,
+        totalAmount: document.getElementById('totalAmount').textContent
+    };
+
+    // Save booking summary to local storage
+    localStorage.setItem('bookingSummary', JSON.stringify(bookingData));
+
+    // Redirect to history2.html
+    window.location.href = 'index.html';
+}
+
+        function startOver() {
+    const bookingData = {
+        hotelName: document.getElementById('hotelName').textContent,
+        hotelPrice: document.getElementById('hotelPrice').textContent,
+        nights: document.getElementById('nights').textContent,
+        flightDetails: document.getElementById('flightDetails').textContent,
+        totalAmount: document.getElementById('totalAmount').textContent
+    };
+
+    fetch('http://localhost:3000/save-booking', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bookingData)
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log(data);
+        alert("Your booking has been saved!");
+
+        // Redirect to the home page after saving the booking
+        window.location.href = 'index.html';
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+    // Reset the pages (this part will not execute until the fetch is complete)
+    document.getElementById('page3').classList.add('hidden');
+    document.getElementById('flight-options').innerHTML = '';
+    loadFlightOptions();
+}
+
+        // Load flight options on page load
+        loadFlightOptions();
+    </script>
+</body>
+</html>

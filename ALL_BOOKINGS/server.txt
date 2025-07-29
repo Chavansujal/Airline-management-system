@@ -1,0 +1,140 @@
+const express = require('express');
+const nodemailer = require('nodemailer');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const mongoose = require('mongoose');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
+
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/nexus-airlines')
+    .then(() => console.log('Connected to MongoDB'))
+    .catch((err) => console.error('Failed to connect to MongoDB', err));
+
+// Define the Booking model
+const bookingSchema = new mongoose.Schema({
+    name: String,
+    mobile: String,
+    address: String,
+    dob: String,
+    departureCity: String,
+    destinationCity: String,
+    departureDate: String,
+    returnDate: String,
+    passengers: Number,
+    amount: Number,
+    email: String,
+});
+
+const Booking = mongoose.model('Booking', bookingSchema);
+
+// Configure the SMTP transporter
+const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com', // Replace with your SMTP server
+    port: 587, // Common SMTP port (use 465 for SSL)
+    secure: false, // true for 465, false for other ports
+    auth: {
+        user: 'sujalchavan103@gmail.com', // Your email address
+        pass: 'ogck wdjv nlxp cgdn', // Your email password or app password
+    },
+});
+
+// API endpoint to send email
+app.post('/send-email', async (req, res) => {
+    const { email, message } = req.body;
+
+    const mailOptions = {
+        from: 'sujalchavan103@gmail.com', // Sender address
+        to: email, // List of recipients
+        subject: 'Welcome to Nexus Airlines!', // Subject line
+        text: message, // Plain text body
+        html: `<strong>${message}</strong>`, // HTML body (optional)
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        res.status(200).send('Email sent successfully');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error sending email');
+    }
+});
+
+// New API endpoint to send booking confirmation email and save booking data
+app.post('/send-confirmation-email', async (req, res) => {
+    const { email, bookingDetails } = req.body;
+
+    console.log('Email:', email); // Log the email to check if it's being received correctly
+    console.log('Booking Details:', bookingDetails); // Log booking details for debugging
+
+    if (!email) {
+        return res.status(400).send('Email is required');
+    }
+
+    const message = `
+        Thank you for your booking! Here are your details:
+        Name: ${bookingDetails.name}
+        Mobile: ${bookingDetails.mobile}
+        Address: ${bookingDetails.address}
+        Date of Birth: ${bookingDetails.dob}
+        Departure City: ${bookingDetails.departureCity}
+        Destination City: ${bookingDetails.destinationCity}
+        Departure Date: ${bookingDetails.departureDate}
+        Return Date: ${bookingDetails.returnDate}
+        Total Passengers: ${bookingDetails.passengers}
+        Total Amount Paid: Rs ${bookingDetails.paymentAmount}
+    `;
+
+    const mailOptions = {
+        from: 'sujalchavan103@gmail.com', // Sender address
+        to: email, // List of recipients
+        subject: 'Booking Confirmation - Nexus Airlines', // Subject line
+        text: message, // Plain text body
+        html: `<pre>${message}</pre>`, // HTML body (optional)
+    };
+
+    // Save booking data to MongoDB
+    const booking = new Booking({
+        name: bookingDetails.name,
+        mobile: bookingDetails.mobile,
+        address: bookingDetails.address,
+        dob: bookingDetails.dob,
+        departureCity: bookingDetails.departureCity,
+        destinationCity: bookingDetails.destinationCity,
+        departureDate: bookingDetails.departureDate,
+        returnDate: bookingDetails.returnDate,
+        passengers: bookingDetails.passengers,
+        amount: bookingDetails.paymentAmount,
+        email: email,
+    });
+
+    try {
+        await booking.save();
+        await transporter.sendMail(mailOptions);
+        res.status(200).send('Confirmation email sent successfully');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error sending confirmation email');
+    }
+});
+
+// API endpoint to retrieve booking history
+app.get('/booking-history', async (req, res) => {
+    try {
+        const bookings = await Booking.find();
+        res.status(200).send(bookings);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error retrieving booking history');
+    }
+});
+
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});

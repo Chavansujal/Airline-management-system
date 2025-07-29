@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotels</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #202020;
+            color: #fff;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+
+        h1 {
+            font-size: 2em;
+            text-align: center;
+            color: #f4a261;
+        }
+
+        .hotels {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .hotel-card {
+            width: 30%;
+            background: #2a2a2a;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .hotel-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .hotel-content {
+            padding: 15px;
+        }
+
+        .hotel-content h2 {
+            margin: 0;
+            font-size: 1.5em;
+            color: #e76f51;
+        }
+
+        .hotel-content p {
+            margin: 5px 0;
+            font-size: 1em;
+        }
+
+        .price {
+            margin-top: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #e9c46a;
+        }
+        .book-button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #e76f51;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .book-button:hover {
+        background-color: #f4a261;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="destination-title">Hotels</h1>
+        <div class="hotels" id="hotels-container">
+            <!-- Hotels will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // Hotel data for destinations
+        const hotelData = {
+            manali: [
+                {
+                    name: "Himalayan Resort & Spa",
+                    description: "Luxury resort with mountain views",
+                    price: "₹15,000 per night",
+                    rating: "4.5",
+                    image: "images/hotelmanali.jpg"
+                },
+                {
+                    name: "Renest River Country Resort Manali",
+                    description: "Luxury resort with mountain views",
+                    price: "₹14,000 per night",
+                    rating: "4.3",
+                    image: "images/renestriver.webp"
+                },
+                {
+                    name: "Pine Valley Lodge",
+                    description: "Cozy lodge surrounded by pine forests",
+                    price: "₹12,000 per night",
+                    rating: "4.2",
+                    image: "images/pinevally.avif"
+                }
+            ],
+            Singapore: [
+                {
+                    name: "Grand Hyatt Singapore",
+                    description: "Luxury resort with vibrant designs",
+                    price: "₹35,000 per night",
+                    rating: "4.2",
+                    image: "images/grandhyatt.webp"
+                },
+                {
+                    name: "Marina Bay Sands , Singapore",
+                    description: "Luxury resort with world's biggest infinity pool",
+                    price: "₹40,000 per night",
+                    rating: "4.5",
+                    image: "images/marina.jpeg"
+                },
+                {
+                    name: "Singapore Marriott Tang Plaza Hotel",
+                    description: "Step into a world of luxury and experience unsurpassed comfort",
+                    price: "₹38,000 per night",
+                    rating: "4.2",
+                    image: "images/marriott.jpg"
+                }
+            ],
+            Paris: [
+                {
+                    name: "Hotel Le Meurice",
+                    description: "Luxury hotel in the heart of Paris with iconic views",
+                    price: "₹30,000 per night",
+                    rating: "4.8",
+                    image: "images/meurice.jpeg" // change to your image file
+                },
+                {
+                    name: "Shangri-La Hotel Paris",
+                    description: "Elegant hotel with stunning views of the Eiffel Tower",
+                    price: "₹35,000 per night",
+                    rating: "4.7",
+                    image: "images/shangri.jpeg" // change to your image file
+                },
+                {
+                    name: "The Ritz Paris",
+                    description: "A historic hotel offering world-class service and amenities",
+                    price: "₹40,000 per night",
+                    rating: "4.9",
+                    image: "images/ritz.jpeg" // change to your image file
+                }
+            ],
+            dubai: [
+    {
+        name: "Burj Al Arab Jumeirah",
+        description: "Iconic luxury hotel with stunning views of the Arabian Gulf",
+        price: "₹75,000 per night",
+        rating: "4.9",
+        image: "images/burj.jpg" // change to your image file
+    },
+    {
+        name: "Atlantis The Palm",
+        description: "Lavish resort with underwater suites and a private beach",
+        price: "₹55,000 per night",
+        rating: "4.7",
+        image: "images/atlantis.jpg" // change to your image file
+    },
+    {
+        name: "Armani Hotel Dubai",
+        description: "Sophisticated hotel with elegant interiors designed by Giorgio Armani",
+        price: "₹50,000 per night",
+        rating: "4.8",
+        image: "images/armani.jpg" // change to your image file
+    }
+],
+
+maldives: [
+    {
+        name: "Soneva Fushi",
+        description: "Luxurious resort offering beachfront villas and exceptional service",
+        price: "₹80,000 per night",
+        rating: "4.9",
+        image: "images/sonevafushi.jpg" // change to your image file
+    },
+    {
+        name: "Anantara Veli Maldives Resort",
+        description: "Exclusive resort with overwater bungalows and vibrant marine life",
+        price: "₹60,000 per night",
+        rating: "4.8",
+        image: "images/anantaraveli.webp" // change to your image file
+    },
+    {
+        name: "Conrad Maldives Rangali Island",
+        description: "Opulent resort with underwater dining and luxurious villas",
+        price: "₹70,000 per night",
+        rating: "4.9",
+        image: "images/rangali.webp" // change to your image file
+    }
+],
+newyork: [
+    {
+        name: "The Plaza Hotel",
+        description: "Iconic luxury hotel in the heart of Manhattan with world-class service",
+        price: "₹45,000 per night",
+        rating: "4.8",
+        image: "images/plaza.jpeg" // change to your image file
+    },
+    {
+        name: "The St. Regis New York",
+        description: "Elegant hotel offering timeless luxury and excellent amenities",
+        price: "₹50,000 per night",
+        rating: "4.7",
+        image: "images/regis.jpeg" // change to your image file
+    },
+    {
+        name: "Four Seasons Hotel New York Downtown",
+        description: "Modern luxury with stunning views of the skyline and Central Park",
+        price: "₹55,000 per night",
+        rating: "4.9",
+        image: "images/four.jpeg" // change to your image file
+    }
+],
+
+London: [
+    {
+        name: "The Ritz London",
+        description: "Historic hotel offering unparalleled luxury in the heart of London",
+        price: "₹60,000 per night",
+        rating: "4.9",
+        image: "images/ritzlondon.jpeg" // change to your image file
+    },
+    {
+        name: "Claridge's",
+        description: "Sophisticated art deco hotel known for its timeless elegance",
+        price: "₹55,000 per night",
+        rating: "4.8",
+        image: "images/Claridge's.jpeg" // change to your image file
+    },
+    {
+        name: "Shangri-La Hotel at The Shard",
+        description: "Luxury hotel with stunning views from the top of the Shard",
+        price: "₹65,000 per night",
+        rating: "4.9",
+        image: "images/shangri-la.jpeg" // change to your image file
+    }
+],
+
+Sydney: [
+    {
+        name: "Park Hyatt Sydney",
+        description: "Stylish waterfront hotel with views of the Sydney Opera House",
+        price: "₹50,000 per night",
+        rating: "4.8",
+        image: "images/park.jpeg" // change to your image file
+    },
+    {
+        name: "The Langham Sydney",
+        description: "Luxury hotel with refined design and impeccable service",
+        price: "₹55,000 per night",
+        rating: "4.9",
+        image: "images/langham.jpeg" // change to your image file
+    },
+    {
+        name: "Four Seasons Hotel Sydney",
+        description: "Modern luxury with stunning harbor views and top-notch amenities",
+        price: "₹60,000 per night",
+        rating: "4.8",
+        image: "images/sydney.jpeg" // change to your image file
+    }
+],
+
+Tokyo: [
+    {
+        name: "The Peninsula Tokyo",
+        description: "Luxury hotel in the heart of Tokyo with exceptional service",
+        price: "₹70,000 per night",
+        rating: "4.9",
+        image: "images/peninsula.jpeg" // change to your image file
+    },
+    {
+        name: "Mandarin Oriental Tokyo",
+        description: "Chic hotel offering breathtaking views and impeccable service",
+        price: "₹65,000 per night",
+        rating: "4.8",
+        image: "images/mandarin.jpeg" // change to your image file
+    },
+    {
+        name: "Shangri-La Hotel Tokyo",
+        description: "Luxury hotel with a perfect blend of modern comfort and traditional elegance",
+        price: "₹60,000 per night",
+        rating: "4.9",
+        image: "images/tokyola.jpeg" // change to your image file
+    }
+],
+
+capetown: [
+    {
+        name: "One&Only Cape Town",
+        description: "Stunning resort with a mix of modern and traditional luxury",
+        price: "₹45,000 per night",
+        rating: "4.9",
+        image: "images/one.jpeg" // change to your image file
+    },
+    {
+        name: "The Silo Hotel",
+        description: "Boutique hotel in a converted silo with panoramic views of the city",
+        price: "₹50,000 per night",
+        rating: "4.8",
+        image: "images/silo.jpeg" // change to your image file
+    },
+    {
+        name: "Ellerman House",
+        description: "Exclusive boutique hotel with breathtaking views of the Atlantic Ocean",
+        price: "₹55,000 per night",
+        rating: "4.9",
+        image: "images/ellerman.jpeg" // change to your image file
+    }
+],
+
+rome: [
+    {
+        name: "Hotel de Russie",
+        description: "Luxury hotel with a beautiful garden and prime location in central Rome",
+        price: "₹60,000 per night",
+        rating: "4.9",
+        image: "images/russie.jpeg" // change to your image file
+    },
+    {
+        name: "The St. Regis Rome",
+        description: "Elegant hotel offering classic luxury and exceptional service",
+        price: "₹55,000 per night",
+        rating: "4.8",
+        image: "images/regisrome.jpeg" // change to your image file
+    },
+    {
+        name: "Hotel Eden",
+        description: "Luxurious hotel with panoramic views of the city and the Vatican",
+        price: "₹65,000 per night",
+        rating: "4.9",
+        image: "images/eden.jpeg" // change to your image file
+    }
+],
+            goa: [
+                {
+                    name: "Beachside Paradise",
+                    description: "Relax by the sea with stunning views",
+                    price: "₹10,000 per night",
+                    rating: "4.7",
+                    image: "images/beach.jpg"
+                },
+                {
+                    name: "Tropical Bliss Resort",
+                    description: "Enjoy tropical vibes and luxury",
+                    price: "₹8,000 per night",
+                    rating: "4.6",
+                    image: "images/trophic.jpeg"
+                }
+            ]
+        };
+
+        // Get the destination from the URL
+        const params = new URLSearchParams(window.location.search);
+        const destination = params.get("destination") || "manali";
+
+        // Update the page dynamically
+        const title = document.getElementById("destination-title");
+        const hotelsContainer = document.getElementById("hotels-container");
+        const hotels = hotelData[destination] || [];
+
+        if (hotels.length > 0) {
+            title.textContent = `Hotels in ${destination.charAt(0).toUpperCase() + destination.slice(1)}`;
+            hotels.forEach(hotel => {
+                const hotelCard = `
+                    <div class="hotel-card">
+                    <img src="${hotel.image}" alt="${hotel.name}">
+                    <div class="hotel-content">
+                    <h2>${hotel.name}</h2>
+                    <p>${hotel.description}</p>
+                    <p class="price">${hotel.price}</p>
+                    <p>⭐ ${hotel.rating}</p>
+            <a href="trip.html?hotelName=${encodeURIComponent(hotel.name)}&price=${encodeURIComponent(hotel.price)}&destination=${encodeURIComponent(destination)}" class="book-button">Book</a>
+        </div>
+    </div>
+`;
+            hotelsContainer.innerHTML += hotelCard;
+        });
+        } else {
+            title.textContent = "No Hotels Found";
+            hotelsContainer.innerHTML = "<p>No hotels available for this destination.</p>";
+        }
+    </script>
+</body>
+</html>

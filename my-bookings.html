@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #282c34;
+            color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+            background-image: url('th.jpg'); /* Path to your background image */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .ticket {
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px;
+            background-color: rgba(20, 0, 73, 0.9);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .ticket:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            background-color: #ffffff;
+            color: #333;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 1000;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .home-button:hover {
+            background-color: #333;
+            color: #fff;
+        }
+        h1 {
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="btn btn-light home-button">Home</a>
+    <div class="container mt-5">
+        <h1 class="text-center">My Bookings</h1>
+        <div class="row" id="ticketContainer"></div>
+    </div>
+
+    <script>
+        // Function to load tickets from local storage and display them
+        function loadTickets() {
+            const tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+            const ticketContainer = document.getElementById('ticketContainer');
+            ticketContainer.innerHTML = ''; // Clear previous tickets
+
+            tickets.forEach((ticket, index) => {
+                const ticketDiv = document.createElement('div');
+                ticketDiv.className = 'col-md-4 mb-4'; // Adjust the column size as needed
+                ticketDiv.innerHTML = `
+                    <div class="ticket" id="ticket-${index}">
+                        <center><h4>${ticket.airline}</h4></center>
+                        <p><strong>Name:</strong> ${ticket.name}</p>
+                        <p><strong>Total Tickets:</strong> ${ticket.passengers}</p>
+                        <p><strong>Total Amount Paid:</strong> ${ticket.amount}</p>
+                        <p><strong>Departure City:</strong> ${ticket.departureCity}</p>
+                        <p><strong>Destination City:</strong> ${ticket.destinationCity}</p>
+                        <p><strong>Address:</strong> ${ticket.address}</p>
+                        <p><strong>Mobile No:</strong> ${ticket.mobile}</p>
+                        <p class="text-success">Warm greetings from AirNexus! Use this receipt for ticket info.</p>
+                        <button class="btn btn-primary" onclick="downloadTicket(${index})">Download Ticket</button>
+                        <button class="btn btn-danger" onclick="deleteTicket(${index})">Delete</button>
+                    </div>
+                `;
+                ticketContainer.appendChild(ticketDiv);
+            });
+        }
+
+        // Function to download the ticket as a PNG image
+        function downloadTicket(index) {
+            const tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+            const ticket = tickets[index];
+
+            // Create a canvas element
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            // Set canvas dimensions
+            canvas.width = 400; // Adjust width as needed
+            canvas.height = 300; // Adjust height as needed
+
+            // Draw the ticket information on the canvas
+            ctx.fillStyle = '#f9f9f9'; // Background color
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#ccc'; // Border color
+            ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#000'; // Text color
+            ctx.font = '16px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText(`Airline: ${ticket.airline}`, 10, 30);
+            ctx.fillText(`Name: ${ticket.name}`, 10, 60);
+            ctx.fillText(`Total Tickets: ${ticket.passengers}`, 10, 90);
+            ctx.fillText(`Total Amount Paid: ${ticket.amount}`, 10, 120);
+            ctx.fillText(`Departure City: ${ticket.departureCity}`, 10, 150);
+            ctx.fillText(`Destination City: ${ticket.destinationCity}`, 10, 180);
+            ctx.fillText(`Address: ${ticket.address}`, 10, 210);
+            ctx.fillText(`Mobile No: ${ticket.mobile}`, 10, 240);
+            ctx.fillText(`Warm greetings from AirNexus! Use this receipt for ticket info.`, 10, 270);
+
+            // Convert canvas to PNG and trigger download
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Ticket_${ticket.name.replace(/\s+/g, '_')}.png`; // Filename with user's name
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url); // Clean up the URL object
+            }, 'image/png');
+        }
+
+        // Function to delete a ticket from local storage
+        function deleteTicket(index) {
+            const tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+            tickets.splice(index, 1); // Remove the ticket at the specified index
+            localStorage.setItem('tickets', JSON.stringify(tickets)); // Update local storage
+            loadTickets(); // Reload tickets to reflect changes
+        }
+
+        // Load tickets when the page is loaded
+        window.onload = loadTickets;
+    </script>
+</body>
+</html>

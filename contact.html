@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - CheapFlight</title>
+    <link rel="icon" href="apnalogo.png" type="image/png">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMNin/txSKkA7rqe6zKV/7WAu5Q1CVy1vQXOdFW" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: url('images/plane3.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            position: relative;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+        .banner {
+            padding: 5px 5px;
+            color: #fff;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeDown 1s ease-out;
+            width: 100%;
+        }
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .contact-section {
+            max-width: 800px;
+            margin: auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.93);
+            border-radius: 10px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 2;
+            animation: fadeIn 1.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            margin-bottom: 20px;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        .contact-form button {
+            padding: 12px;
+            background-color: #004085;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .contact-form button:hover {
+            background-color: #002752;
+            transform: translateY(-2px);
+        }
+        .contact-info {
+            margin-top: 30px;
+            padding: 20px;
+            background: #e9ecef;
+            border-radius: 5px;
+        }
+        .contact-info h3 {
+            margin-bottom: 15px;
+        }
+        .contact-info p {
+            margin-bottom: 5px;
+        }
+        footer {
+            background-color: #343a40;
+            color: #f8f9fa;
+            padding: 25px 0;
+            position: relative;
+            z-index: 2;
+            animation: slideInUp 1s ease-out;
+        }
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .footer-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .footer-section {
+            margin-bottom: 20px;
+            flex: 1 1 200px;
+            text-align: center;
+        }
+        .footer-section h3 {
+            margin-bottom: 10px;
+        }
+        .footer-section a {
+            display: block;
+            color: #f8f9fa;
+            margin-bottom: 5px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .footer-section a:hover {
+            color: #007bff;
+            text-decoration: underline;
+        }
+        .footer-icons {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        .footer-icons a {
+            margin: 0 15px;
+            color: #f8f9fa;
+            font-size: 24px;
+            transition: transform 0.3s, color 0.3s;
+        }
+        .footer-icons a:hover {
+            color: #007bff;
+            transform: scale(1.2);
+        }
+        .footer-payment {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        .footer-payment img {
+            margin: 0 8px;
+            height: 30px;
+        }
+        .footer-bottom {
+            text-align: center;
+            margin-top: 25px;
+            border-top: 1px solid #495057;
+            padding-top: 15px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="banner">
+        <h1>Contact Us</h1>
+    </div>
+    <div class="contact-section">
+        <form class="contact-form">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <input type="text" placeholder="Subject" required>
+            <textarea placeholder="Your Message" rows="5" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+        <div class="contact-info">
+            <h3>Contact Information</h3>
+            <p>Email: <a href="mailto:support@Air-Nexus.com">support@Air-Nexus.com</a></p>
+            <p>Phone: +1 (234) 567-8901</p>
+            <p>Address: Flight Network, 123 Airway Lane, City, State, ZIP</p>
+        </div>
+    </div>
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Products and Services</h3>
+                <a href="#">Cancellation Protection</a>
+            </div>
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <a href="about.html">About us</a>
+                <a href="terms.html">Terms and Conditions</a>
+                <a href="privacy.html">Privacy Policy</a>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <a href="contact.html">Contact us</a>
+                <a href="faq.html">FAQ</a>
+                <a href="history.html">My Bookings</a>
+            </div>
+            <div class="footer-section">
+                <h3>Log in</h3>
+                <a href="history.html" class="my-bookings-button">My Bookings</a>
+            </div>
+        </div>
+        <div class="footer-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-payment">
+            <img src="images/payment.png" alt="RuPay">
+            <img src="images/visa.png" alt="Visa">
+            <img src="images/google-pay.png" alt="G-pay">
+            <img src="images/th-removebg-preview.png" alt="UPI">
+            <img src="images/paypal.png" alt="PayPal">
+        </div>
+        <div class="footer-bottom">
+            <p>Flight Network / Etraveli India Private Limited, S.No 30/3, 31/1 2A Weikfield Estate, 6th floor,<br>
+            Block D, Weikfield IT Citi Info Park, Nagar Road, Viman Nagar, Pune - 411014, Maharashtra, India. VAT/Org number: 27AAGCE5704Q1Z6</p>
+            <p>© 2024 Flight Network. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destination Cards</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212; /* Warm dark black */
+            color: #fff; /* Text color for better contrast */
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2em;
+            color: #f5f5f5; /* Light color for better visibility */
+            margin-bottom: 20px;
+        }
+
+        .cards {
+            display: flex;
+            flex-wrap: wrap; /* Enable wrapping for multiple rows */
+            justify-content: space-between;
+            gap: 100px;
+        }
+
+        .card {
+            position: relative;
+            width: 100%; /* Adjust width to 48% for two cards per row */
+            height: 300px; /* Set fixed height for all cards */
+            overflow: hidden;
+            border-radius: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+            background: #1c1c1c; /* Darker background for cards */
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%; /* Set height to 100% to fill the card */
+            object-fit: cover; /* Ensures the image fits within the fixed card size */
+            display: block;
+        }
+
+        .card-content {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            border-radius: 5px;
+            width: calc(100% - 20px); /* Ensures proper alignment and spacing */
+        }
+
+        .card-content h2 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        .card-content p {
+            margin: 5px 0 0;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Select Your Destination</h1>
+        
+            <a href="hotels.html?destination=manali">
+                <div class="card"> 
+                    <img src="images/Manali.jpg" alt="Manali">
+                    <div class="card-content">
+                        <h2>Manali</h2>
+                        <p>Experience the breathtaking beauty of the Himalayas</p>
+                    </div>
+                </div>
+            </a>
+            <a href="hotels.html?destination=Singapore">
+                <div class="card">
+                    <img src="images/Singapore.jpg" alt="Singapore">
+                    <div class="card-content">
+                        <h2>Singapore</h2>
+                        <p>Discover the perfect blend of culture and modernity</p>
+                    </div>
+                </div>
+            </a>
+            <a href="hotels.html?destination=Paris">
+                <div class="card">
+                    <img src="images/Paris.jpeg" alt="Paris">
+                    <div class="card-content">
+                        <h2>Paris</h2>
+                        <p>Explore the romantic city of lights</p>
+                    </div>
+                </div>
+            </a>
+            <a href="hotels.html?destination=dubai">
+                <div class="card">
+                    <img src="images/dubai.jpg" alt="Dubai">
+                    <div class="card-content">
+                        <h2>Dubai</h2>
+                        <p>Experience luxury and skyscrapers</p>
+                    </div>
+                </div>
+            </a>
+            <a href="hotels.html?destination=maldives">
+                <div class="card">
+                    <img src="images/maldivs.jpg" alt="Mal dives">
+                    <div class="card-content">
+                        <h2>Maldives</h2>
+                        <p>Relax in paradise by the turquoise waters</p>
+                    </div>
+                </div>
+            </a>
+            <a href="hotels.html?destination=newyork">
+                <div class="card">
+                    <img src="images/newyork.jpg" alt="New York">
+                    <div class="card-content">
+                        <h2>New York</h2>
+                        <p>The city that never sleeps awaits</p>
+                    </div>
+                </div>
+            </a>
+            <a href="hotels.html?destination=Tokyo">
+                <div class="card">
+                    <img src="images/Tokyo.jpeg" alt="Tokyo">
+                    <div class="card-content">
+                        <h2>Tokyo</h2>
+                        <p>Immerse in the futuristic culture of Japan</p>
+                    </div>
+                </div>
+            </a>
+            <a href="hotels.html?destination=goa">
+                <div class="card">
+                    <img src="images/goa.jpg" alt="Goa">
+                    <div class="card-content">
+                        <h2>Goa</h2>
+                        <p>Unwind on sun-kissed beaches</p>
+                    </div>
+                </div>
+            </a>
+            <a href="hotels.html?destination=London">
+                <div class="card">
+                    <img src="images/London.jpeg" alt="London">
+                    <div class="card-content">
+                        <h2>London</h2>
+                        <p>Discover the charm of England’s capital</p>
+                    </div>
+                </div>
+            </a>
+            <a href="hotels.html?destination=sydney">
+                <div class="card">
+                    <img src="images/sydey.jpeg" alt="Sydney">
+                    <div class="card-content">
+                        <h2>Sydney</h2>
+                        <p>Visit the iconic Sydney Opera House</p>
+                    </div>
+                </div>
+            </a>
+            <a href="hotels.html?destination=rome">
+                <div class="card">
+                    <img src="images/rome.jpg" alt="Rome">
+                    <div class="card-content">
+                        <h2>Rome</h2>
+                        <p>Step into the historic ruins of Italy</p>
+                    </div>
+                </div>
+            </a>
+            <a href="hotels.html?destination=capetown">
+                <div class="card">
+                    <img src="images/capetown.jpeg" alt="Cape Town">
+                    <div class="card-content">
+                        <h2>Cape Town</h2>
+                        <p>Marvel at the beauty of Table Mountain</p>
+                    </div>
+                </div>
+            </a>
+        
+    </div>
+</body>
+</html>

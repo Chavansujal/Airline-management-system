@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking History</title>
+    <style>
+        body {
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 40px;
+            background-image: url('th.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        /* Button Styling and Positioning */
+        .button-container {
+            position: absolute;
+            width: 94%;
+            display: flex;
+            justify-content: space-between;
+            margin: 20px;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        h2 {
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            margin-top: 30px;
+        }
+
+        .table-container {
+            width: 95%;
+            max-width: 1200px;
+            height: 60vh;
+            overflow-y: auto;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+            color: #333;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #e0e0e0;
+        }
+
+        .empty-message {
+            color: #fff;
+            margin-top: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Transparent scrollbar styling */
+        .table-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .table-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .table-container {
+            scrollbar-color: rgba(0, 0, 0, 0.2) rgba(255, 255, 255, 0.3);
+            scrollbar-width: thin;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Booking History</h2>
+        <div class="card">
+            <table id="bookingTable">
+                <thead>
+                    <tr>
+                        <th>Hotel Name</th>
+                        <th>Hotel Price</th>
+                        <th>Nights</th>
+                        <th>Flight Details</th>
+                        <th>Total Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="bookingTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Load booking summary from local storage
+        const bookingSummary = JSON.parse(localStorage.getItem('bookingSummary'));
+
+        // Display booking summary in the table
+        if (bookingSummary) {
+            const tableBody = document.getElementById('bookingTableBody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${bookingSummary.hotelName}</td>
+                <td>₹${bookingSummary.hotelPrice}</td>
+                <td>${bookingSummary.nights}</td>
+                <td>${bookingSummary.flightDetails}</td>
+                <td>₹${bookingSummary.totalAmount}</td>
+            `;
+            tableBody.appendChild(row);
+        }
+    </script>
+</body>
+</html>

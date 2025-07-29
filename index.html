@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>NEXUS AIRLINES</title>
+    <style>
+        * {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f8f8f8;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .card {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 800px;
+            /* Adjust as needed */
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-header h2 {
+            margin: 0;
+            color: #333;
+        }
+
+        .card-header a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-header a svg {
+            margin-right: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-group input[type="text"]:focus {
+            outline: none;
+            border-color: #333;
+        }
+
+        .form-group input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        .form-group .travel-type {
+            display: flex;
+            align-items: center;
+        }
+
+        .form-group .travel-type label {
+            margin-right: 20px;
+        }
+
+        .form-group .travel-type input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .form-group .dates {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .form-group .dates .date {
+            width: 48%;
+        }
+
+        .form-group .passengers {
+            width: 48%;
+        }
+
+        .form-group .passengers select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-group .passengers select:focus {
+            outline: none;
+            border-color: #333;
+        }
+
+        .form-group .promo {
+            display: flex;
+            align-items: center;
+        }
+
+        .form-group .promo input[type="text"] {
+            width: 200px;
+        }
+
+        .form-group .promo button {
+            background-color: #656565;
+            color: #000000;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .form-group .promo button:hover {
+            opacity: 0.8;
+        }
+
+        .form-group .search-button {
+            background-color: #800080;
+            color: #000000;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .form-group .search-button:hover {
+            opacity: 0.8;
+        }
+
+        .example-2 {
+            display: flex;
+            justify-content: center;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            gap: 20px;
+        }
+
+        .example-2 li {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .icon-content {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+
+        .icon-content svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+            transition: fill 0.3s;
+        }
+
+        .icon-content:hover svg {
+            fill: #800080;
+            /* Change color on hover */
+        }
+
+        .card {
+            display: flex;
+            height: 70px;
+            width: 270px;
+        }
+
+        .card svg {
+            position: absolute;
+            display: flex;
+            width: 60%;
+            height: 100%;
+            font-size: 24px;
+            font-weight: 700;
+            opacity: 1;
+            transition: opacity 0.25s;
+            z-index: 2;
+            cursor: pointer;
+            background-color: transparent;
+            /* Added this line to set background to transparent */
+        }
+
+        .card .social-link1,
+        .card .social-link2,
+        .card .social-link3,
+        .card .social-link4 {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 25%;
+            color: whitesmoke;
+            font-size: 24px;
+            text-decoration: none;
+            transition: 0.25s;
+            border-radius: 50px;
+            background-color: transparent;
+            /* Set background to transparent */
+        }
+
+        .card svg {
+            transform: scale(1);
+        }
+
+        .card .social-link1:hover,
+        .card .social-link2:hover,
+        .card .social-link3:hover,
+        .card .social-link4:hover {
+            background-color: transparent;
+            /* Ensure background remains transparent on hover */
+            animation: bounce_613 0.4s linear;
+        }
+
+        @keyframes bounce_613 {
+            40% {
+                transform: scale(1.4);
+            }
+
+            60% {
+                transform: scale(0.8);
+            }
+
+            80% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            min-width: 130px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: rgb(0, 0, 0);
+            padding: 10px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f182;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .nav_logo img {
+            height: 250px;
+            /* Adjust height as needed */
+            width: 250px;
+            /* Maintain aspect ratio */
+
+        }
+
+        /* Footer Styling */
+        /* Footer Styling */
+        footer {
+            background-color: #9ff9ff;
+            /* Updated to match the page background */
+            color: #000;
+            padding: 40px 20px;
+            font-size: 14px;
+        }
+
+        .footer-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            background-color: #9ff9ff;
+        }
+
+        .footer-section {
+            background-color: #9ff9ff;
+        }
+
+        .footer-section {
+            flex: 1 1 200px;
+            margin: 10px;
+            background-color: #9ff9ff;
+        }
+
+
+        .footer-section h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            background-color: #9ff9ff;
+        }
+
+        .footer-section a {
+            display: block;
+            color: #000;
+            text-decoration: none;
+            margin-bottom: 10px;
+            background-color: #9ff9ff;
+        }
+
+        .footer-section a:hover {
+            text-decoration: underline;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 10px;
+            background-color: transparent;
+            background-color: none;
+            background-color: #9ff9ff;
+            
+        }
+
+        .social-icons a {
+            font-size: 24px;
+            color: #000;
+            background-color: #9ff9ff;
+
+        }
+
+        .social-icons a:hover {
+            color: #800080;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 20px;
+            background-color: #00eeff;
+        }
+
+        .footer-payment img {
+            width: 50px;
+            margin: 0 10px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            font-size: 12px;
+            color: #000000;
+            margin-top: 20px;
+            background-color: #9ff9ff;;
+
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .footer-container {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        .icon-content {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 5px;
+            background-color: #9ff9ff;
+        }
+
+        .icon-content svg {
+            width: 24px;
+            height: 24px;
+            background-color: #9ff9ff;
+            transition: fill 0.3s;
+        }
+
+        .icon-content:hover svg {
+            fill: #800080;
+            /* Change color on hover */
+        }
+
+        h5{
+            background-color: transparent;
+            background: none;
+            background-color: #9ff9ff;
+        }
+
+        .tooltip {
+            display: none;
+            position: absolute;
+            bottom: 30px;
+            background-color: #333;
+
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        .icon-content:hover .tooltip {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="nav_logo">
+            <img src="images/Nexus-logo.png" alt="Air-Nexus Logo"> <!-- Adjust the height as needed -->
+        </div>
+        <b>
+            <ul class="nav__links">
+                <li><a href="Ticket.html">TICKET</a></li>
+                <li><a href="offer.html">OFFER</a></li>
+                <li><a href="about.html">ABOUT US</a></li>
+                <li class="dropdown">
+                    <a href="#">ACCOUNT</a>
+                    <div class="dropdown-content">
+                        <a href="my-bookings.html">My Bookings</a>
+                        <a href="review.html">Reviews</a>
+                        <a href="load.html" onclick="logout()">Log Out</a>
+                    </div>
+                </li>
+            </ul>
+        </b>
+    </nav>
+
+    <header class="section__container header__container">
+        <h1 class="section__header">Find And Book<br />A Great Experience</h1>
+        <img src="assets/header.jpg" alt="header" />
+    </header>
+
+    <section class="section__container plan__container">
+        <p class="subheader">TRAVEL SUPPORT</p>
+        <h2 class="section__header">Plan your travel with confidence</h2>
+        <p class="description">
+            Find help with your bookings and travel plans, and see what to expect along your journey.
+        </p>
+        <br><br><br><br>
+        <div class="plan__grid">
+            <div class="plan__content">
+                <span class="number">01</span>
+                <h4>Travel Requirements for Dubai</h4>
+                <p>
+                    Stay informed and prepared for your trip to Dubai with essential travel requirements, ensuring a
+                    smooth and hassle-free experience in this vibrant and captivating city.
+                </p>
+                <span class="number">02</span>
+                <h4>Multi-risk travel insurance</h4>
+                <p>
+                    Comprehensive protection for your peace of mind, covering a range of potential travel risks and
+                    unexpected situations.
+                </p>
+                <span class="number">03</span>
+                <h4>Travel Requirements by destinations</h4>
+                <p>
+                    Stay informed and plan your trip with ease, as we provide up-to-date information on travel
+                    requirements specific to your desired destinations.
+                </p>
+            </div>
+            <div class="plan__image">
+                <img src="assets/plan-1.jpg" alt="plan" />
+                <img src="assets/plan-2.jpg" alt="plan" />
+                <img src="assets/plan-3.jpg" alt="plan" />
+            </div>
+        </div>
+    </section>
+
+    <section class="memories">
+        <div class="section__container memories__container">
+            <div class="memories__header">
+                <h2 class="section__header">Travel to make memories all around the world</h2>
+                <button class="view__all" onclick="window.location.href='destination.html'">View All</button>
+            </div>
+            <div class="memories__grid">
+                <div class="memories__card">
+                    <span><i class="ri-calendar-2-line"></i></span>
+                    <h4>Book & relax</h4>
+                    <p>
+                        With "Book and Relax," you can sit back, unwind, and enjoy the journey while we take care of
+                        everything else.
+                    </p>
+                </div>
+                <div class="memories__card">
+                    <span><i class="ri-shield-check-line"></i></span>
+                    <h4>Smart Checklist</h4>
+                    <p>
+                        Introducing Smart Checklist with us, the innovative solution revolutionizing the way you travel
+                        with our airline.
+                    </p>
+                </div>
+                <div class="memories__card">
+                    <span><i class="ri-bookmark-2-line"></i></span>
+                    <h4>Save More</h4>
+                    <p>
+                        From discounted ticket prices to exclusive promotions and deals, we prioritize affordability
+                        without compromising on quality.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section__container lounge__container">
+        <div class="lounge__image">
+            <img src="assets/lounge-1.jpg" alt="lounge" />
+            <img src="assets/lounge-2.jpg" alt="lounge" />
+        </div>
+        <div class="lounge__content">
+            <h2 class="section__header">Unaccompanied Minor Lounge</h2>
+            <div class="lounge__grid">
+                <div class="lounge__details">
+                    <h4>Experience Tranquility</h4>
+                    <p>
+                        Serenity Haven offers a tranquil escape, featuring comfortable seating, calming ambiance, and
+                        attentive service.
+                    </p>
+                </div>
+                <div class="lounge__details">
+                    <h4>Elevate Your Experience</h4>
+                    <p>
+                        Designed for discerning travelers, this exclusive lounge offers premium amenities, assistance,
+                        and private workspaces.
+                    </p>
+                </div>
+                <div class="lounge__details">
+                    <h4>A Welcoming Space</h4>
+                    <p>
+                        Creating a family-friendly atmosphere, The Family Zone is the perfect haven for parents and
+                        children.
+                    </p>
+                </div>
+                <div class="lounge__details">
+                    <h4>A Culinary Delight</h4>
+                    <p>
+                        Immerse yourself in a world of flavors, offering international cuisines, gourmet dishes, and
+                        carefully curated beverages.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section__container travellers__container">
+        <h2 class="section__header">Best travellers of the month</h2>
+        <div class="travellers__grid">
+            <div class="travellers__card">
+                <img src="assets/traveller-1.jpg" alt="traveller" />
+                <div class="travellers__card__content">
+                    <img src="assets/client-1.jpg" alt="client" />
+                    <h4>Diksha Katakdhond</h4>
+                    <p>Dubai</p>
+                </div>
+            </div>
+            <div class="travellers__card">
+                <img src="assets/traveller-2.jpg" alt="traveller" />
+                <div class="travellers__card__content">
+                    <img src="assets/client-2.jpg" alt="client" />
+                    <h4>Sujal Chavan</h4>
+                    <p>Paris</p>
+                </div>
+            </div>
+            <div class="travellers__card">
+                <img src="assets/traveller-3.jpg" alt="traveller" />
+                <div class="travellers__card__content">
+                    <img src="assets/client-3.jpg" alt="client" />
+                    <h4>Aditi Gite</h4>
+                    <p>Singapore</p>
+                </div>
+            </div>
+            <div class="travellers__card">
+                <img src="assets/traveller-4.jpg" alt="traveller" />
+                <div class="travellers__card__content">
+                    <img src="assets/client-4.jpg" alt="client" />
+                    <h4>Ayush Wani</h4>
+                    <p>Malaysia</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Products and Services</h3>
+                <a href="#">Cancellation Protection</a>
+                <a href="#">Travel Insurance</a>
+                <a href="#">Baggage Services</a>
+            </div>
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <a href="about.html">About Us</a>
+                <a href="terms.html">Terms and Conditions</a>
+                <a href="privacy.html">Privacy Policy</a>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <a href="contact.html">Contact Us</a>
+                <a href="faq.html">FAQ</a>
+                <a href="my-bookings.html">My Bookings</a>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="https://www.linkedin.com/in/sujal-chavan-672b982b4/" aria-label="LinkedIn">
+                        <i class="ri-linkedin-line"></i>
+                    </a>
+                    <a href="https://github.com/Chavansujal" aria-label="GitHub">
+                        <i class="ri-github-line"></i>
+                    </a>
+                    <a href="https://www.instagram.com/sujalll_13?" aria-label="Instagram">
+                        <i class="ri-instagram-line"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@Air-nexus" aria-label="Youtube">
+                        <i class="ri-youtube-line"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <h5>&copy; 2025 NEXUS AIRLINES. All rights reserved.</h5>
+        </div>
+    </footer>
+</body>
+
+</html>
